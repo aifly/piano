@@ -1,0 +1,76 @@
+@charset "UTF-8";
+/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {
+    background-color: #fff;
+    border-color: #bf1616;
+    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);
+}*/
+.lt-full {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0; }
+
+.zmiti-text-overflow {
+  overflow: hidden;
+  white-space: nowrap;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  -webkit-text-overflow: ellipsis; }
+
+html, body, div, p, ul, li, ol, dl, dt, dd, header, footer, video, h1, h2, h3, h4, canvas, section, figure {
+  padding: 0;
+  margin: 0; }
+
+a {
+  text-decoration: none; }
+
+li {
+  list-style: none; }
+
+html, body {
+  height: 100%;
+  -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: "Helvetica Neue", 'Helvetica', "Microsoft YaHei", '微软雅黑', arial, sans-serif;
+  overflow-x: hidden;
+  font-size: 14px; }
+
+img {
+  border: none;
+  vertical-align: middle;
+  width: 100%;
+  height: auto; }
+
+.clearfix {
+  clear: both; }
+
+input, textarea {
+  outline: none; }
+
+#fly-main-ui {
+  height: 100%; }
+
+.zmiti-main-ui {
+  width: 100%;
+  height: 100%;
+  position: absolute; }
+  .zmiti-main-ui > ul {
+    width: 100%;
+    height: 40px;
+    display: -webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    -webkit-box-orient: row;
+    border-top: 1px solid #999;
+    border-left: 1px solid #999;
+    box-sizing: border-box; }
+    .zmiti-main-ui > ul li {
+      -webkit-box-flex: 1;
+      border-right: 1px solid #999;
+      border-bottom: 1px solid #999;
+      text-align: center;
+      line-height: 40px; }
+
+/*# sourceMappingURL=index.css.map */
