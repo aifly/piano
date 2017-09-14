@@ -195,25 +195,37 @@ class App extends Component {
 	}
 	playAudio() {
 		var i = 0;
+		this.iNow = i;
 		var render = () => {
-
-			setTimeout(() => {
-				console.log(this.recordArr[i])
-				if (this.recordArr[i]) {
-
-					this.audioArr[this.recordArr[i].index].play();
+			if (this.recordArr[i]) {
+				setTimeout(() => {
+					this.recordArr[i] && this.audioArr[this.recordArr[i].index].play();
 					render();
-				}
-			}, this.recordArr[i].time)
-			i++;
-
+					i += 1;
+				}, this.recordArr[i + 1] ? this.recordArr[i + 1].time : 0)
+			} else {
+				console.log('done')
+				this.recordArr.length = 0
+			}
 
 		}
-		render();
+
+		setTimeout(() => {
+			render();
+		}, 100)
+
+
 
 		//this.recordArr.length = 0;
 	}
 	click(index) {
+
+		if (this.lastKey === index) {
+
+
+		}
+		this.audioArr[index - 1].pause();
+		this.audioArr[index - 1].currentTime = 0.0;
 		this.recordArr = this.recordArr || [];
 
 		if (this.recordArr.length <= 0) {
@@ -229,7 +241,7 @@ class App extends Component {
 			});
 			this.starttime = new Date().getTime();
 		}
-
+		this.lastKey = index;
 		this.audioArr[index - 1].play();
 	}
 	wxConfig(title, desc, img, url) {
@@ -471,6 +483,13 @@ class App extends Component {
 				transY
 			});
 		}
+
+		$(window).on('keydown', (e) => {
+			if (e.keyCode >= 49 && e.keyCode <= 55) {
+				this.click(e.keyCode - 48)
+			}
+
+		})
 
 		this.audioArr = [];
 		for (var i = 0; i < 8; i++) {
