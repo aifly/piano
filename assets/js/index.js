@@ -312,25 +312,33 @@
 				var _this = this;
 
 				var i = 0;
+				this.iNow = i;
 				var render = function render() {
-
-					setTimeout(function () {
-						console.log(_this.recordArr[i]);
-						if (_this.recordArr[i]) {
-
-							_this.audioArr[_this.recordArr[i].index].play();
+					if (_this.recordArr[i]) {
+						setTimeout(function () {
+							_this.recordArr[i] && _this.audioArr[_this.recordArr[i].index].play();
 							render();
-						}
-					}, _this.recordArr[i].time);
-					i++;
+							i += 1;
+						}, _this.recordArr[i + 1] ? _this.recordArr[i + 1].time : 0);
+					} else {
+						console.log('done');
+						_this.recordArr.length = 0;
+					}
 				};
-				render();
+
+				setTimeout(function () {
+					render();
+				}, 100);
 
 				//this.recordArr.length = 0;
 			}
 		}, {
 			key: 'click',
 			value: function click(index) {
+
+				if (this.lastKey === index) {}
+				this.audioArr[index - 1].pause();
+				this.audioArr[index - 1].currentTime = 0.0;
 				this.recordArr = this.recordArr || [];
 
 				if (this.recordArr.length <= 0) {
@@ -346,7 +354,7 @@
 					});
 					this.starttime = new Date().getTime();
 				}
-
+				this.lastKey = index;
 				this.audioArr[index - 1].play();
 			}
 		}, {
@@ -565,6 +573,8 @@
 		}, {
 			key: 'componentDidMount',
 			value: function componentDidMount() {
+				var _this2 = this;
+
 				var s = this;
 				var file = s.getQueryString('file');
 				var border = s.getQueryString('border');
@@ -580,6 +590,12 @@
 						transY: transY
 					});
 				}
+
+				(0, _jquery2['default'])(window).on('keydown', function (e) {
+					if (e.keyCode >= 49 && e.keyCode <= 55) {
+						_this2.click(e.keyCode - 48);
+					}
+				});
 
 				this.audioArr = [];
 				for (var i = 0; i < 8; i++) {

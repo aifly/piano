@@ -66,4 +66,75 @@ input, textarea {
 
   }
 
+  .zmiti-piano-C {
+    @include pos(a);
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    @include displayBox(horizontal);
+
+    &>section {
+      -webkit-box-flex: 1;
+      height: 100%;
+      box-sizing: border-box;
+
+      &:nth-of-type(2) {
+        display: none;
+      }
+
+      .zmiti-piano-key {
+        @include displayBox(vertical);
+        height: 100%;
+
+        li {
+          -webkit-box-flex: 1;
+          width: 100%;
+
+          &:nth-of-type(1) {
+          }
+
+          @include pos(r);
+
+          span.white-key {
+            width: 100%;
+            height: 100%;
+            @include pos(a);
+            background: -webkit-linear-gradient(-30deg, #f8f8f8, #ffffff);
+            background: -moz-linear-gradient(-30deg, #f8f8f8, #ffffff);
+            background: -o-linear-gradient(-30deg, #f8f8f8, #ffffff);
+            background: linear-gradient(-30deg, #f8f8f8, #ffffff);
+            box-shadow: inset 0 1px 0px #ffffff, inset 0 -1px 0px #ffffff, inset 1px 0px 0px #ffffff, inset -1px 0px 0px #ffffff, 0 4px 3px rgba(0, 0, 0, 0.7), inset 0 -1px 0px #ffffff, inset 1px 0px 0px #ffffff, inset -1px -1px 15px rgba(0, 0, 0, 0.5), -3px 4px 6px rgba(0, 0, 0, 0.5);
+          }
+
+          span.black-key {
+            content: "";
+            box-shadow: inset 0px -1px 2px rgba(255, 255, 255, 0.4), 0 2px 3px rgba(0, 0, 0, 0.4);
+            background: -webkit-linear-gradient(-20deg, #222222, #000000, #222222);
+            background: -moz-linear-gradient(-20deg, #222222, #000000, #222222);
+            background: -o-linear-gradient(-20deg, #222222, #000000, #222222);
+            background: linear-gradient(-20deg, #222222, #000000, #222222);
+            border-width: 1px 3px 8px;
+            border-style: solid;
+            border-color: #666 #222 #111 #555;
+            height: 50%;
+            position: absolute;
+            top: 68%;
+            right: -40%;
+            width: 70%;
+            z-index: 10;
+          }
+
+          img {
+            @include pos(a);
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
 }

@@ -22,7 +22,7 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			nickname: ""
+			key: -1
 		}
 
 		this.viewW = document.documentElement.clientWidth;
@@ -177,17 +177,33 @@ class App extends Component {
 
 
 		return <div className='zmiti-main-ui'>
-			<ul style={{marginTop:100}}>
-				<li onClick={this.click.bind(this,1)}>1</li>
-				<li onClick={this.click.bind(this,2)}>2</li>
-				<li onClick={this.click.bind(this,3)}>3</li>
-				<li onClick={this.click.bind(this,4)}>4</li>
-				<li onClick={this.click.bind(this,5)}>5</li>
-				<li onClick={this.click.bind(this,6)}>6</li>
-				<li onClick={this.click.bind(this,7)}>7</li>
-			</ul>
+		{
+			/*<ul hidden style={{marginTop:100}}>
+										<li onClick={this.click.bind(this,1)}>1</li>
+										<li onClick={this.click.bind(this,2)}>2</li>
+										<li onClick={this.click.bind(this,3)}>3</li>
+										<li onClick={this.click.bind(this,4)}>4</li>
+										<li onClick={this.click.bind(this,5)}>5</li>
+										<li onClick={this.click.bind(this,6)}>6</li>
+										<li onClick={this.click.bind(this,7)}>7</li>
+									</ul>*/
+		}
 
-			<div onClick={this.playAudio.bind(this)} className='play' style={{width:100,height:50,border:'1px solid red',margin:'100px auto',textAlign:'center',lineHeight:'50px'}}>
+			<div className='zmiti-piano-C'>
+				<section>
+					<ul className='zmiti-piano-key'>
+						{[0,1,2,3,4,5,6,7].map((item,i)=>{
+							return <li onTouchStart={()=>{this.setState({key:i})}} onTouchEnd={()=>{this.setState({key:-1})}}  key={i} style={{opacity:this.state.key === i ? 1:1}}>
+								<span className="white-key" data-key="71" data-note="2A"></span> 
+								{i!==3 && <span className="black-key" data-key="89" data-note="2As"></span>}
+							</li>
+						})}
+					</ul>
+				</section>
+				<section>2</section>
+			</div>
+
+			<div hidden onClick={this.playAudio.bind(this)} className='play' style={{width:100,height:50,border:'1px solid red',margin:'100px auto',textAlign:'center',lineHeight:'50px'}}>
 				播放
 			</div>
 
@@ -204,7 +220,7 @@ class App extends Component {
 					i += 1;
 				}, this.recordArr[i + 1] ? this.recordArr[i + 1].time : 0)
 			} else {
-				console.log('done')
+
 				this.recordArr.length = 0
 			}
 

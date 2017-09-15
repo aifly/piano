@@ -72,5 +72,56 @@ input, textarea {
       border-bottom: 1px solid #999;
       text-align: center;
       line-height: 40px; }
+  .zmiti-main-ui .zmiti-piano-C {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    display: -webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    -webkit-box-orient: horizontal; }
+    .zmiti-main-ui .zmiti-piano-C > section {
+      -webkit-box-flex: 1;
+      height: 100%;
+      box-sizing: border-box; }
+      .zmiti-main-ui .zmiti-piano-C > section:nth-of-type(2) {
+        display: none; }
+      .zmiti-main-ui .zmiti-piano-C > section .zmiti-piano-key {
+        display: -webkit-box;
+        -webkit-box-align: center;
+        -webkit-box-pack: center;
+        -webkit-box-orient: vertical;
+        height: 100%; }
+        .zmiti-main-ui .zmiti-piano-C > section .zmiti-piano-key li {
+          -webkit-box-flex: 1;
+          width: 100%;
+          position: relative; }
+          .zmiti-main-ui .zmiti-piano-C > section .zmiti-piano-key li span.white-key {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background: -webkit-linear-gradient(-30deg, #f8f8f8, #ffffff);
+            background: -webkit-linear-gradient(120deg, #f8f8f8, #ffffff);
+            background: linear-gradient(-30deg, #f8f8f8, #ffffff);
+            box-shadow: inset 0 1px 0px #ffffff, inset 0 -1px 0px #ffffff, inset 1px 0px 0px #ffffff, inset -1px 0px 0px #ffffff, 0 4px 3px rgba(0, 0, 0, 0.7), inset 0 -1px 0px #ffffff, inset 1px 0px 0px #ffffff, inset -1px -1px 15px rgba(0, 0, 0, 0.5), -3px 4px 6px rgba(0, 0, 0, 0.5); }
+          .zmiti-main-ui .zmiti-piano-C > section .zmiti-piano-key li span.black-key {
+            content: "";
+            box-shadow: inset 0px -1px 2px rgba(255, 255, 255, 0.4), 0 2px 3px rgba(0, 0, 0, 0.4);
+            background: -webkit-linear-gradient(-20deg, #222222, #000000, #222222);
+            background: -webkit-linear-gradient(110deg, #222222, #000000, #222222);
+            background: linear-gradient(-20deg, #222222, #000000, #222222);
+            border-width: 1px 3px 8px;
+            border-style: solid;
+            border-color: #666 #222 #111 #555;
+            height: 50%;
+            position: absolute;
+            top: 68%;
+            right: -40%;
+            width: 70%;
+            z-index: 10; }
+          .zmiti-main-ui .zmiti-piano-C > section .zmiti-piano-key li img {
+            position: absolute; }
 
 /*# sourceMappingURL=index.css.map */
