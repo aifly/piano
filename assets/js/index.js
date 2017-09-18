@@ -101,7 +101,7 @@
 
 			_get(Object.getPrototypeOf(App.prototype), 'constructor', this).call(this, props);
 			this.state = {
-				nickname: ""
+				key: -1
 			};
 
 			this.viewW = document.documentElement.clientWidth;
@@ -249,6 +249,7 @@
 		_createClass(App, [{
 			key: 'render',
 			value: function render() {
+				var _this = this;
 
 				var data = {
 					obserable: obserable,
@@ -261,47 +262,35 @@
 					'div',
 					{ className: 'zmiti-main-ui' },
 					_react2['default'].createElement(
-						'ul',
-						{ style: { marginTop: 100 } },
+						'div',
+						{ className: 'zmiti-piano-C' },
 						_react2['default'].createElement(
-							'li',
-							{ onClick: this.click.bind(this, 1) },
-							'1'
+							'section',
+							null,
+							_react2['default'].createElement(
+								'ul',
+								{ className: 'zmiti-piano-key' },
+								[0, 1, 2, 3, 4, 5, 6, 7].map(function (item, i) {
+									return _react2['default'].createElement(
+										'li',
+										{ key: i, style: { opacity: _this.state.key === i ? 1 : 1 } },
+										_react2['default'].createElement('span', { onTouchEnd: function () {
+												_this.setState({ key: -1 });
+											}, onTouchStart: _this.click.bind(_this, i + 1), className: "white-key " + (_this.state.key === i ? 'pressdown' : ''), 'data-key': '71', 'data-note': '2A' }),
+										i !== 3 && _react2['default'].createElement('span', { className: 'black-key', 'data-key': '89', 'data-note': '2As' })
+									);
+								})
+							)
 						),
 						_react2['default'].createElement(
-							'li',
-							{ onClick: this.click.bind(this, 2) },
+							'section',
+							null,
 							'2'
-						),
-						_react2['default'].createElement(
-							'li',
-							{ onClick: this.click.bind(this, 3) },
-							'3'
-						),
-						_react2['default'].createElement(
-							'li',
-							{ onClick: this.click.bind(this, 4) },
-							'4'
-						),
-						_react2['default'].createElement(
-							'li',
-							{ onClick: this.click.bind(this, 5) },
-							'5'
-						),
-						_react2['default'].createElement(
-							'li',
-							{ onClick: this.click.bind(this, 6) },
-							'6'
-						),
-						_react2['default'].createElement(
-							'li',
-							{ onClick: this.click.bind(this, 7) },
-							'7'
 						)
 					),
 					_react2['default'].createElement(
 						'div',
-						{ onClick: this.playAudio.bind(this), className: 'play', style: { width: 100, height: 50, border: '1px solid red', margin: '100px auto', textAlign: 'center', lineHeight: '50px' } },
+						{ onClick: this.playAudio.bind(this), className: 'play', style: { width: 70, height: 50, border: '1px solid #999', textAlign: 'center', lineHeight: '50px' } },
 						'播放'
 					)
 				);
@@ -309,36 +298,45 @@
 		}, {
 			key: 'playAudio',
 			value: function playAudio() {
-				var _this = this;
+				var _this2 = this;
 
 				var i = 0;
 				this.iNow = i;
+				this.recordArr = this.recordArr || [];
 				var render = function render() {
-					if (_this.recordArr[i]) {
+					if (_this2.recordArr[i]) {
 						setTimeout(function () {
-							_this.recordArr[i] && _this.audioArr[_this.recordArr[i].index].play();
+							_this2.recordArr[i] && _this2.audioArr[_this2.recordArr[i].index].play();
 							render();
 							i += 1;
-						}, _this.recordArr[i + 1] ? _this.recordArr[i + 1].time : 0);
+						}, _this2.recordArr[i + 1] ? _this2.recordArr[i + 1].time : 0);
 					} else {
-						console.log('done');
-						_this.recordArr.length = 0;
+
+						_this2.recordArr.length = 0;
 					}
 				};
 
 				setTimeout(function () {
 					render();
-				}, 100);
+				}, 10);
 
 				//this.recordArr.length = 0;
 			}
 		}, {
 			key: 'click',
-			value: function click(index) {
+			value: function click(index, e) {
+
+				e.preventDefault();
+
+				this.setState({
+					key: index - 1
+				});
 
 				if (this.lastKey === index) {}
+
 				this.audioArr[index - 1].pause();
 				this.audioArr[index - 1].currentTime = 0.0;
+
 				this.recordArr = this.recordArr || [];
 
 				if (this.recordArr.length <= 0) {
@@ -356,6 +354,8 @@
 				}
 				this.lastKey = index;
 				this.audioArr[index - 1].play();
+
+				return false;
 			}
 		}, {
 			key: 'wxConfig',
@@ -573,7 +573,7 @@
 		}, {
 			key: 'componentDidMount',
 			value: function componentDidMount() {
-				var _this2 = this;
+				var _this3 = this;
 
 				var s = this;
 				var file = s.getQueryString('file');
@@ -593,7 +593,7 @@
 
 				(0, _jquery2['default'])(window).on('keydown', function (e) {
 					if (e.keyCode >= 49 && e.keyCode <= 55) {
-						_this2.click(e.keyCode - 48);
+						_this3.click(e.keyCode - 48);
 					}
 				});
 
@@ -601,6 +601,11 @@
 				for (var i = 0; i < 8; i++) {
 					var audio = new Audio(html5webPiano.mp3Sound["sound" + i]);
 					this.audioArr.push(audio);
+					//audio.muted = true;
+					///audio.play();
+					audio.onended = function () {
+						//audio.muted = false
+					};
 				}
 
 				//this.wxConfig(document.title, window.share.desc, 'http://h5.zmiti.com/public/teacherday/assets/images/300.jpg');
@@ -622,6 +627,16 @@
 	})(_react.Component);
 
 	_reactDom2['default'].render(_react2['default'].createElement(App, null), document.getElementById('fly-main-ui'));
+
+	/*<ul hidden style={{marginTop:100}}>
+								<li onClick={this.click.bind(this,1)}>1</li>
+								<li onClick={this.click.bind(this,2)}>2</li>
+								<li onClick={this.click.bind(this,3)}>3</li>
+								<li onClick={this.click.bind(this,4)}>4</li>
+								<li onClick={this.click.bind(this,5)}>5</li>
+								<li onClick={this.click.bind(this,6)}>6</li>
+								<li onClick={this.click.bind(this,7)}>7</li>
+							</ul>*/
 
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("F:\\xuchang2017\\project\\piano\\node_modules\\react-hot-loader\\makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "index.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
@@ -34902,7 +34917,7 @@
 
 
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\r\n/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0; }\r\n\r\n.zmiti-text-overflow {\r\n  overflow: hidden;\r\n  white-space: nowrap;\r\n  word-break: break-all;\r\n  text-overflow: ellipsis;\r\n  -webkit-text-overflow: ellipsis; }\r\n\r\nhtml, body, div, p, ul, li, ol, dl, dt, dd, header, footer, video, h1, h2, h3, h4, canvas, section, figure {\r\n  padding: 0;\r\n  margin: 0; }\r\n\r\na {\r\n  text-decoration: none; }\r\n\r\nli {\r\n  list-style: none; }\r\n\r\nhtml, body {\r\n  height: 100%;\r\n  -webkit-tap-highlight-color: transparent; }\r\n\r\nbody {\r\n  font-family: \"Helvetica Neue\", 'Helvetica', \"Microsoft YaHei\", '\\5FAE\\8F6F\\96C5\\9ED1', arial, sans-serif;\r\n  overflow-x: hidden;\r\n  font-size: 14px; }\r\n\r\nimg {\r\n  border: none;\r\n  vertical-align: middle;\r\n  width: 100%;\r\n  height: auto; }\r\n\r\n.clearfix {\r\n  clear: both; }\r\n\r\ninput, textarea {\r\n  outline: none; }\r\n\r\n#fly-main-ui {\r\n  height: 100%; }\r\n\r\n.zmiti-main-ui {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute; }\r\n  .zmiti-main-ui > ul {\r\n    width: 100%;\r\n    height: 40px;\r\n    display: -webkit-box;\r\n    -webkit-box-align: center;\r\n    -webkit-box-pack: center;\r\n    -webkit-box-orient: row;\r\n    border-top: 1px solid #999;\r\n    border-left: 1px solid #999;\r\n    box-sizing: border-box; }\r\n    .zmiti-main-ui > ul li {\r\n      -webkit-box-flex: 1;\r\n      border-right: 1px solid #999;\r\n      border-bottom: 1px solid #999;\r\n      text-align: center;\r\n      line-height: 40px; }\r\n\r\n/*# sourceMappingURL=index.css.map */", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\r\n/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0; }\r\n\r\n.zmiti-text-overflow {\r\n  overflow: hidden;\r\n  white-space: nowrap;\r\n  word-break: break-all;\r\n  text-overflow: ellipsis;\r\n  -webkit-text-overflow: ellipsis; }\r\n\r\nhtml, body, div, p, ul, li, ol, dl, dt, dd, header, footer, video, h1, h2, h3, h4, canvas, section, figure {\r\n  padding: 0;\r\n  margin: 0; }\r\n\r\na {\r\n  text-decoration: none; }\r\n\r\nli {\r\n  list-style: none; }\r\n\r\nhtml, body {\r\n  height: 100%;\r\n  -webkit-tap-highlight-color: transparent; }\r\n\r\nbody {\r\n  font-family: \"Helvetica Neue\", 'Helvetica', \"Microsoft YaHei\", '\\5FAE\\8F6F\\96C5\\9ED1', arial, sans-serif;\r\n  overflow-x: hidden;\r\n  font-size: 14px; }\r\n\r\nimg {\r\n  border: none;\r\n  vertical-align: middle;\r\n  width: 100%;\r\n  height: auto; }\r\n\r\n.clearfix {\r\n  clear: both; }\r\n\r\ninput, textarea {\r\n  outline: none; }\r\n\r\n#fly-main-ui {\r\n  height: 100%; }\r\n\r\n.zmiti-main-ui {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  overflow: hidden; }\r\n  .zmiti-main-ui .play {\r\n    position: fixed;\r\n    right: 0;\r\n    top: 50%;\r\n    margin-top: -25px;\r\n    z-index: 100;\r\n    -webkit-transform: rotate(90deg);\r\n    transform: rotate(90deg); }\r\n  .zmiti-main-ui > ul {\r\n    width: 100%;\r\n    height: 40px;\r\n    display: -webkit-box;\r\n    -webkit-box-align: center;\r\n    -webkit-box-pack: center;\r\n    -webkit-box-orient: row;\r\n    border-top: 1px solid #999;\r\n    border-left: 1px solid #999;\r\n    box-sizing: border-box; }\r\n    .zmiti-main-ui > ul li {\r\n      -webkit-box-flex: 1;\r\n      border-right: 1px solid #999;\r\n      border-bottom: 1px solid #999;\r\n      text-align: center;\r\n      line-height: 40px; }\r\n  .zmiti-main-ui .zmiti-piano-C {\r\n    position: absolute;\r\n    width: 100%;\r\n    height: 100%;\r\n    left: 0;\r\n    top: 0;\r\n    display: -webkit-box;\r\n    -webkit-box-align: center;\r\n    -webkit-box-pack: center;\r\n    -webkit-box-orient: horizontal; }\r\n    .zmiti-main-ui .zmiti-piano-C > section {\r\n      -webkit-box-flex: 1;\r\n      height: 100%;\r\n      box-sizing: border-box; }\r\n      .zmiti-main-ui .zmiti-piano-C > section:nth-of-type(2) {\r\n        display: none; }\r\n      .zmiti-main-ui .zmiti-piano-C > section .zmiti-piano-key {\r\n        display: -webkit-box;\r\n        -webkit-box-align: center;\r\n        -webkit-box-pack: center;\r\n        -webkit-box-orient: vertical;\r\n        height: 100%; }\r\n        .zmiti-main-ui .zmiti-piano-C > section .zmiti-piano-key li {\r\n          -webkit-box-flex: 1;\r\n          width: 100%;\r\n          -webkit-transform-style: preserve-3d;\r\n          transform-style: preserve-3d;\r\n          perspective: 800px;\r\n          -webkit-perspective: 800px;\r\n          position: relative; }\r\n          .zmiti-main-ui .zmiti-piano-C > section .zmiti-piano-key li span.white-key {\r\n            width: 100%;\r\n            height: 100%;\r\n            position: absolute; }\r\n            .zmiti-main-ui .zmiti-piano-C > section .zmiti-piano-key li span.white-key:before {\r\n              position: absolute;\r\n              width: 100%;\r\n              height: 100%;\r\n              content: '';\r\n              background: -webkit-linear-gradient(-30deg, #f8f8f8, #ffffff);\r\n              background: -webkit-linear-gradient(120deg, #f8f8f8, #ffffff);\r\n              background: linear-gradient(-30deg, #f8f8f8, #ffffff);\r\n              box-shadow: inset 0 1px 0px #ffffff, inset 0 -1px 0px #ffffff, inset 1px 0px 0px #ffffff, inset -1px 0px 0px #ffffff, 0 4px 3px rgba(0, 0, 0, 0.7), inset 0 -1px 0px #ffffff, inset 1px 0px 0px #ffffff, inset -1px -1px 15px rgba(0, 0, 0, 0.5), -3px 4px 6px rgba(0, 0, 0, 0.5); }\r\n            .zmiti-main-ui .zmiti-piano-C > section .zmiti-piano-key li span.white-key.pressdown {\r\n              -webkit-transform-origin: right;\r\n              transform-origin: right;\r\n              -webkit-transform: rotateY(-4deg);\r\n              transform: rotateY(-4deg); }\r\n          .zmiti-main-ui .zmiti-piano-C > section .zmiti-piano-key li span.black-key {\r\n            content: \"\";\r\n            box-shadow: inset 0px -1px 2px rgba(255, 255, 255, 0.4), 0 2px 3px rgba(0, 0, 0, 0.4);\r\n            background: -webkit-linear-gradient(-20deg, #222222, #000000, #222222);\r\n            background: -webkit-linear-gradient(110deg, #222222, #000000, #222222);\r\n            background: linear-gradient(-20deg, #222222, #000000, #222222);\r\n            border-width: 1px 3px 8px;\r\n            border-style: solid;\r\n            border-color: #666 #222 #111 #555;\r\n            height: 50%;\r\n            position: absolute;\r\n            top: 68%;\r\n            right: -40%;\r\n            width: 70%;\r\n            z-index: 10; }\r\n          .zmiti-main-ui .zmiti-piano-C > section .zmiti-piano-key li img {\r\n            position: absolute; }\r\n\r\n/*# sourceMappingURL=index.css.map */", ""]);
 
 	// exports
 

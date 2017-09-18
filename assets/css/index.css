@@ -55,7 +55,16 @@ input, textarea {
 .zmiti-main-ui {
   width: 100%;
   height: 100%;
-  position: absolute; }
+  position: absolute;
+  overflow: hidden; }
+  .zmiti-main-ui .play {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    margin-top: -25px;
+    z-index: 100;
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg); }
   .zmiti-main-ui > ul {
     width: 100%;
     height: 40px;
@@ -97,15 +106,29 @@ input, textarea {
         .zmiti-main-ui .zmiti-piano-C > section .zmiti-piano-key li {
           -webkit-box-flex: 1;
           width: 100%;
+          -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+          perspective: 800px;
+          -webkit-perspective: 800px;
           position: relative; }
           .zmiti-main-ui .zmiti-piano-C > section .zmiti-piano-key li span.white-key {
             width: 100%;
             height: 100%;
-            position: absolute;
-            background: -webkit-linear-gradient(-30deg, #f8f8f8, #ffffff);
-            background: -webkit-linear-gradient(120deg, #f8f8f8, #ffffff);
-            background: linear-gradient(-30deg, #f8f8f8, #ffffff);
-            box-shadow: inset 0 1px 0px #ffffff, inset 0 -1px 0px #ffffff, inset 1px 0px 0px #ffffff, inset -1px 0px 0px #ffffff, 0 4px 3px rgba(0, 0, 0, 0.7), inset 0 -1px 0px #ffffff, inset 1px 0px 0px #ffffff, inset -1px -1px 15px rgba(0, 0, 0, 0.5), -3px 4px 6px rgba(0, 0, 0, 0.5); }
+            position: absolute; }
+            .zmiti-main-ui .zmiti-piano-C > section .zmiti-piano-key li span.white-key:before {
+              position: absolute;
+              width: 100%;
+              height: 100%;
+              content: '';
+              background: -webkit-linear-gradient(-30deg, #f8f8f8, #ffffff);
+              background: -webkit-linear-gradient(120deg, #f8f8f8, #ffffff);
+              background: linear-gradient(-30deg, #f8f8f8, #ffffff);
+              box-shadow: inset 0 1px 0px #ffffff, inset 0 -1px 0px #ffffff, inset 1px 0px 0px #ffffff, inset -1px 0px 0px #ffffff, 0 4px 3px rgba(0, 0, 0, 0.7), inset 0 -1px 0px #ffffff, inset 1px 0px 0px #ffffff, inset -1px -1px 15px rgba(0, 0, 0, 0.5), -3px 4px 6px rgba(0, 0, 0, 0.5); }
+            .zmiti-main-ui .zmiti-piano-C > section .zmiti-piano-key li span.white-key.pressdown {
+              -webkit-transform-origin: right;
+              transform-origin: right;
+              -webkit-transform: rotateY(-4deg);
+              transform: rotateY(-4deg); }
           .zmiti-main-ui .zmiti-piano-C > section .zmiti-piano-key li span.black-key {
             content: "";
             box-shadow: inset 0px -1px 2px rgba(255, 255, 255, 0.4), 0 2px 3px rgba(0, 0, 0, 0.4);

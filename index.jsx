@@ -193,8 +193,8 @@ class App extends Component {
 				<section>
 					<ul className='zmiti-piano-key'>
 						{[0,1,2,3,4,5,6,7].map((item,i)=>{
-							return <li onTouchStart={()=>{this.setState({key:i})}} onTouchEnd={()=>{this.setState({key:-1})}}  key={i} style={{opacity:this.state.key === i ? 1:1}}>
-								<span className="white-key" data-key="71" data-note="2A"></span> 
+							return <li  key={i} style={{opacity:this.state.key === i ? 1:1}}>
+								<span onTouchEnd={()=>{this.setState({key:-1})}}  onTouchStart={this.click.bind(this,i+1)} className={"white-key "+(this.state.key===i?'pressdown':'')} data-key="71" data-note="2A"></span> 
 								{i!==3 && <span className="black-key" data-key="89" data-note="2As"></span>}
 							</li>
 						})}
@@ -203,7 +203,7 @@ class App extends Component {
 				<section>2</section>
 			</div>
 
-			<div hidden onClick={this.playAudio.bind(this)} className='play' style={{width:100,height:50,border:'1px solid red',margin:'100px auto',textAlign:'center',lineHeight:'50px'}}>
+			<div  onClick={this.playAudio.bind(this)} className='play' style={{width:70,height:50,border:'1px solid #999',textAlign:'center',lineHeight:'50px'}}>
 				播放
 			</div>
 
@@ -212,6 +212,7 @@ class App extends Component {
 	playAudio() {
 		var i = 0;
 		this.iNow = i;
+		this.recordArr = this.recordArr || [];
 		var render = () => {
 			if (this.recordArr[i]) {
 				setTimeout(() => {
@@ -228,20 +229,28 @@ class App extends Component {
 
 		setTimeout(() => {
 			render();
-		}, 100)
+		}, 10)
 
 
 
 		//this.recordArr.length = 0;
 	}
-	click(index) {
+	click(index, e) {
+
+		e.preventDefault();
+
+		this.setState({
+			key: index - 1
+		})
 
 		if (this.lastKey === index) {
 
 
 		}
+
 		this.audioArr[index - 1].pause();
 		this.audioArr[index - 1].currentTime = 0.0;
+
 		this.recordArr = this.recordArr || [];
 
 		if (this.recordArr.length <= 0) {
@@ -259,6 +268,8 @@ class App extends Component {
 		}
 		this.lastKey = index;
 		this.audioArr[index - 1].play();
+
+		return false;
 	}
 	wxConfig(title, desc, img, url) {
 		var s = this;
@@ -511,6 +522,12 @@ class App extends Component {
 		for (var i = 0; i < 8; i++) {
 			var audio = new Audio(html5webPiano.mp3Sound["sound" + i])
 			this.audioArr.push(audio)
+				//audio.muted = true;
+				///audio.play();
+			audio.onended = function() {
+				//audio.muted = false
+			}
+
 		}
 
 		//this.wxConfig(document.title, window.share.desc, 'http://h5.zmiti.com/public/teacherday/assets/images/300.jpg');

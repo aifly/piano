@@ -47,6 +47,16 @@ input, textarea {
   width: 100%;
   height: 100%;
   @include pos(a);
+  overflow: hidden;
+
+  .play {
+    @include pos(f);
+    right: 0;
+    top: 50%;
+    margin-top: -25px;
+    z-index: 100;
+    @include transform(rotate(90deg));
+  }
 
   &>ul {
     width: 100%;
@@ -90,6 +100,7 @@ input, textarea {
         li {
           -webkit-box-flex: 1;
           width: 100%;
+          @include transform3d();
 
           &:nth-of-type(1) {
           }
@@ -100,11 +111,24 @@ input, textarea {
             width: 100%;
             height: 100%;
             @include pos(a);
-            background: -webkit-linear-gradient(-30deg, #f8f8f8, #ffffff);
-            background: -moz-linear-gradient(-30deg, #f8f8f8, #ffffff);
-            background: -o-linear-gradient(-30deg, #f8f8f8, #ffffff);
-            background: linear-gradient(-30deg, #f8f8f8, #ffffff);
-            box-shadow: inset 0 1px 0px #ffffff, inset 0 -1px 0px #ffffff, inset 1px 0px 0px #ffffff, inset -1px 0px 0px #ffffff, 0 4px 3px rgba(0, 0, 0, 0.7), inset 0 -1px 0px #ffffff, inset 1px 0px 0px #ffffff, inset -1px -1px 15px rgba(0, 0, 0, 0.5), -3px 4px 6px rgba(0, 0, 0, 0.5);
+
+            &:before {
+              @include pos(a);
+              width: 100%;
+              height: 100%;
+              content: '';
+              background: -webkit-linear-gradient(-30deg, #f8f8f8, #ffffff);
+              background: -moz-linear-gradient(-30deg, #f8f8f8, #ffffff);
+              background: -o-linear-gradient(-30deg, #f8f8f8, #ffffff);
+              background: linear-gradient(-30deg, #f8f8f8, #ffffff);
+              box-shadow: inset 0 1px 0px #ffffff, inset 0 -1px 0px #ffffff, inset 1px 0px 0px #ffffff, inset -1px 0px 0px #ffffff, 0 4px 3px rgba(0, 0, 0, 0.7), inset 0 -1px 0px #ffffff, inset 1px 0px 0px #ffffff, inset -1px -1px 15px rgba(0, 0, 0, 0.5), -3px 4px 6px rgba(0, 0, 0, 0.5);
+            }
+
+            &.pressdown {
+              @include transformOrigin(right);
+              @include transform(rotateY(-4deg));
+            }
+
           }
 
           span.black-key {
